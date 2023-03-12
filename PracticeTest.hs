@@ -36,38 +36,28 @@ factorsUntil12 n = [a | a <- [1..12], a `elem` (factorsPT n)]
 
 
 highlyDivisible :: Int -> [Int]
-highlyDivisible n = [[a | a <- [2..], factorsUntil12 a == [1..12]] !! (n-1)]
+--highlyDivisible n = [[a | a <- [2..], factorsUntil12 a == [1..12]] !! (n-1)]
+highlyDivisible n = take n [i | i <- [1..], allDivides i]
+
+allDivides :: Int -> Bool
+allDivides i = all (\ k -> i `mod` k == 0) [2..12] 
 
 largestOddFactor :: Int -> [Int]
-largestOddFactor n = [last(filter odd (factorsPT n))]
+largestOddFactor n = [last(filter odd(factorsPT i))|i<-[1..n]]
 
-  
+
+
 {- Question 4 -}
 equals :: (Enum a, Bounded a, Eq b) => (a -> b) -> (a -> b) -> Bool
-equals = undefined
+equals f1 f2 = and [f1 x == f2 x | x <- [minBound .. maxBound]]
 --equals f1 f2 = (f1 (maxBound(a)) == f2 (maxBound(a))) && (f1 (minBound(a)) == f2 (minBound(a))) && (f1 (succ(a)) == f2 (succ(a))) && (f1 (pred(a)) == f2 (pred(a))) where a :: Enum
 
 --equals f1 f2 = (f1(a1) == f2(a2)) where ((maxBound(a1) == maxBound(a2)) && (minBound(a1) == minBound(a2)) && (pred(a1) == pred(a2)) && (succ(a1) == succ(a2)))
 
 {- Question 5 -}
 
---babylonianPalindromes :: [Integer]
---babylonianPalindromes = [a :: Integer | a <- [1..], isPalindrome(numToBase60 a)]
-
---isPalindrome :: [Integer] -> Bool
---isPalindrome a = a == reverse(a)
-
---numToBase60 :: Integer -> [Integer]
---numToBase60 0 = []
---numToBase60 n = removeFirstZero( n `mod` 60 : numToBase60 (n `div` 60))
-
---removeFirstZero :: [Integer] -> [Integer]
---removeFirstZero [] = []
---removeFirstZero (0:xs) = xs
---removeFirstZero (x:xs) = (x:xs)
-
 babylonianPalindromes :: [Integer]
-babylonianPalindromes = [a | a <- [1..], isPalindrome(numToBase60 a), length (numToBase60 a) > 1]
+babylonianPalindromes = [a | a <- [1..], isPalindrome(numToBase60 a), (length (numToBase60 a)) > 1]
 
 isPalindrome :: [Integer] -> Bool
 isPalindrome a = a == reverse(a)
